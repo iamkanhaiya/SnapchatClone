@@ -1,5 +1,6 @@
 package com.example.sanpchatclone
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -33,8 +34,8 @@ class SanpsActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item?.itemId == R.id.creatSnap){
 
-
-
+          val intent = Intent(this,CreateSnapActivity::class.java)
+           startActivity(intent)
 
         } else if (item?.itemId == R.id.logout){
 
