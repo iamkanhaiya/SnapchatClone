@@ -3,21 +3,28 @@ package com.example.sanpchatclone
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
-import java.lang.Exception
-import java.util.jar.Manifest
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
+import java.io.ByteArrayOutputStream
+import java.util.*
+
 
 class CreateSnapActivity : AppCompatActivity() {
 
 
     var createSnapImageView : ImageView? = null
     var messageEditText: EditText?= null
-
+    val imageName = UUID.randomUUID().toString() + ".jpg"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,4 +103,39 @@ class CreateSnapActivity : AppCompatActivity() {
 
     }
 
-}
+    fun nextClicked(view: View){
+
+// Get the data from an ImageView as bytes
+
+        // Get the data from an ImageView as bytes
+        createSnapImageView?.setDrawingCacheEnabled(true)
+        createSnapImageView?.buildDrawingCache()
+        val bitmap = (createSnapImageView?.getDrawable() as BitmapDrawable).bitmap
+        val baos = ByteArrayOutputStream()
+        bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data= baos.toByteArray()
+
+
+
+
+        val uploadTask: UploadTask =  FirebaseStorage.getInstance().getReference().child("imagess").child(imageName).putBytes(data)
+        uploadTask.addOnFailureListener {
+            Toast.makeText(this,"UploadFailed",Toast.LENGTH_SHORT).show()
+        }.addOnSuccessListener {
+            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+            // ...
+            Log.i("data","done");
+            Toast.makeText(this,"Uploaddone",Toast.LENGTH_SHORT).show()
+
+        }
+        uploadTask.addOnProgressListener { taskSnapshot ->
+            val progress = (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
+            println("Upload is $progress% done")
+        }.addOnPausedListener {
+            println("Upload is paused")
+        }
+
+    }
+
+
+ }
