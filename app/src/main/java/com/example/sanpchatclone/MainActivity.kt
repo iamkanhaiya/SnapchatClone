@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 
 class MainActivity : AppCompatActivity() {
@@ -56,10 +57,18 @@ emailEditText = findViewById(R.id.emailfield);
             ) { task ->
                 if (task.isSuccessful) {
                     logIn()
+
+
+
                 } else {
                     mAuth.createUserWithEmailAndPassword(emailEditText?.text.toString(), passwordEditText?.text.toString()).addOnCompleteListener(this) { task ->
                             if (task.isSuccessful) {
                                logIn()
+
+                                task.result?.user?.uid?.let {
+                                    FirebaseDatabase.getInstance().getReference().child("users").child(it).child("email").setValue(emailEditText?.text.toString())
+                                }
+
 
                             } else {
                                Toast.makeText(this,"Login failed ! Please try again",Toast.LENGTH_SHORT).show();
