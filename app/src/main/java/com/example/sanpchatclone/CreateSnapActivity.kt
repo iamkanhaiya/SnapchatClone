@@ -127,6 +127,10 @@ class CreateSnapActivity : AppCompatActivity() {
             Log.i("data","done");
             Toast.makeText(this,"Uploaddone",Toast.LENGTH_SHORT).show()
 
+
+            val intent = Intent(this,ChooseUserActivity::class.java);
+            startActivity(intent);
+
         }
         uploadTask.addOnProgressListener { taskSnapshot ->
             val progress = (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
@@ -134,6 +138,9 @@ class CreateSnapActivity : AppCompatActivity() {
         }.addOnPausedListener {
             println("Upload is paused")
         }
+
+
+
 
     }
 
