@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -13,7 +14,9 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -122,14 +125,30 @@ class CreateSnapActivity : AppCompatActivity() {
         uploadTask.addOnFailureListener {
             Toast.makeText(this,"UploadFailed",Toast.LENGTH_SHORT).show()
         }.addOnSuccessListener {
-            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-            // ...
+
+
+
             Log.i("data","done");
             Toast.makeText(this,"Uploaddone",Toast.LENGTH_SHORT).show()
 
 
-            val intent = Intent(this,ChooseUserActivity::class.java);
-            startActivity(intent);
+            FirebaseStorage.getInstance().getReference().child("imagess").child(imageName).getDownloadUrl()
+                .addOnSuccessListener(OnSuccessListener<Uri?> { downloadUri->
+
+                var myurl = downloadUri.toString()
+
+
+                    val intent = Intent(this,ChooseUserActivity::class.java);
+                    intent.putExtra("imageUrl",myurl)
+                    intent.putExtra("imageName",imageName)
+                    intent.putExtra("message",messageEditText?.text.toString())
+                    startActivity(intent);
+
+
+
+            }).addOnFailureListener {
+                // Handle any errors
+            }
 
         }
         uploadTask.addOnProgressListener { taskSnapshot ->
