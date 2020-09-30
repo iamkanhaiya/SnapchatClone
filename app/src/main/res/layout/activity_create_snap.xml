@@ -34,11 +34,13 @@
         android:id="@+id/forstatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
         android:layout_marginTop="252dp"
         android:layout_marginEnd="42dp"
         android:text="image select status"
         android:textAlignment="center"
         app:layout_constraintEnd_toStartOf="@+id/button2"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></TextView>
 
     <EditText
