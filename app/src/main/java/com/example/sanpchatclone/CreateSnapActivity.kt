@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.OnSuccessListener
@@ -28,6 +29,7 @@ class CreateSnapActivity : AppCompatActivity() {
     var createSnapImageView : ImageView? = null
     var messageEditText: EditText?= null
     val imageName = UUID.randomUUID().toString() + ".jpg"
+    var imagestatus: TextView?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +37,7 @@ class CreateSnapActivity : AppCompatActivity() {
 
         createSnapImageView = findViewById(R.id.imageView2)
         messageEditText = findViewById(R.id.mymessage)
+        imagestatus = findViewById(R.id.forstatus)
     }
 
      fun getPhoto(){
